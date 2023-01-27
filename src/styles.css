@@ -230,3 +230,21 @@ h1 {
     transform: translateY(0%);
   }
 }
+
+.keyboard {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.key {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--color-gray-700);
+  border-radius: 4px;
+  font-size: 1.25rem;
+  line-height: 2rem;
+  text-align: center;
+  cursor: pointer;
+}
