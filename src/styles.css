@@ -248,3 +248,14 @@ h1 {
   text-align: center;
   cursor: pointer;
 }
+
+.reset-button {
+  display: block;
+  margin-top: 16px;
+  margin-inline: auto;
+  font-size: 1.25rem;
+  padding: 8px 16px;
+  border: 2px solid var(--color-gray-700);
+  border-radius: 4px;
+  cursor: pointer;
+}

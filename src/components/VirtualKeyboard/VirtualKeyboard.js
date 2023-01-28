@@ -20,31 +20,33 @@ export const VirtualKeyboard = ({ handleAddWord, guesses, setGuesses }) => {
     return result;
   };
 
+  const handleSubmit = () => {
+    if (word.length < 5) {
+      if (guesses.length === 0) {
+        setGuesses([convertWord(word)]);
+        return;
+      }
+
+      const nextGuesses = guesses.map((guess) => {
+        if (guess.length < 5) {
+          return convertWord(word);
+        }
+                
+        return guess;
+      });
+
+      setGuesses(nextGuesses);
+    } else {
+      handleAddWord(word);
+      setWord("");
+    }
+  };
+
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
-
-        if (word.length < 5) {
-          if (guesses.length === 0) {
-            setGuesses([convertWord(word)]);
-            return;
-          }
-
-          const nextGuesses = guesses.map((guess) => {
-            if (guess.length < 5) {
-              return convertWord(word);
-            }
-
-            return guess;
-          });
-          console.log(nextGuesses);
-
-          setGuesses(nextGuesses);
-        } else if (word.length === 5) {
-          handleAddWord(word);
-          setWord("");
-        }
+        handleSubmit();
       }}
     >
       {rows.map((row, index) => (

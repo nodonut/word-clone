@@ -8,14 +8,10 @@ import { checkGuess } from "../../game-helpers";
 import Banner from "../Banner";
 import VirtualKeyboard from "../VirtualKeyboard";
 
-// Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
-
 function Game() {
   const [guesses, setGuesses] = React.useState([]);
   const [userWon, setUserWon] = React.useState(false);
+  const [answer, setAnswer] = React.useState(sample(WORDS));
 
   const handleAddGuess = (guess) => {
     const nextGuesses = [...guesses];
@@ -37,6 +33,13 @@ function Game() {
     setGuesses(nextGuesses);
   };
 
+  const handleReset = () => {
+    const nextAnswer = sample(WORDS);
+    setAnswer(nextAnswer);
+    setGuesses([]);
+    setUserWon(false);
+  };
+
   const checkIfWon = (result) => {
     for (let i = 0; i < result.length; i++) {
       if (result[i].status !== "correct") {
@@ -50,9 +53,13 @@ function Game() {
     <>
       <DisplayGuess guesses={guesses} />
       {userWon ? (
-        <Banner status="happy" numOfGuesses={guesses.length} />
+        <Banner
+          status="happy"
+          numOfGuesses={guesses.length}
+          handleReset={handleReset}
+        />
       ) : guesses.length === 6 && !userWon ? (
-        <Banner status="sad" answer={answer} />
+        <Banner status="sad" answer={answer} handleReset={handleReset} />
       ) : (
         <>
           <GuessInput handleAddGuess={handleAddGuess} />
