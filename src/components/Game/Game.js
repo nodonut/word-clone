@@ -2,60 +2,51 @@ import React from "react";
 
 import { sample } from "../../utils";
 import { WORDS } from "../../data";
+import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
+
+import GuessResults from "../GuessResults";
 import GuessInput from "../GuessInput";
-import DisplayGuess from "../DisplayGuess";
-import { checkGuess } from "../../game-helpers";
 import Banner from "../Banner";
 import VirtualKeyboard from "../VirtualKeyboard";
 
 function Game() {
   const [guesses, setGuesses] = React.useState([]);
-  const [userWon, setUserWon] = React.useState(false);
+  const [gameStatus, setGameStatus] = React.useState("running");
   const [answer, setAnswer] = React.useState(sample(WORDS));
+  console.log(answer);
 
   const handleAddGuess = (guess) => {
-    const nextGuesses = [...guesses];
-    const result = checkGuess(guess, answer);
-    if (checkIfWon(result)) {
-      setUserWon(true);
-    }
-    nextGuesses.push(result);
+    const nextGuesses = [...guesses, guess];
     setGuesses(nextGuesses);
+
+    if (guess.toUpperCase() === answer) {
+      setGameStatus("won");
+    } else if (nextGuesses.length >= NUM_OF_GUESSES_ALLOWED) {
+      setGameStatus("lost");
+    }
   };
 
   const handleReset = () => {
     const nextAnswer = sample(WORDS);
     setAnswer(nextAnswer);
     setGuesses([]);
-    setUserWon(false);
-  };
-
-  const checkIfWon = (result) => {
-    for (let i = 0; i < result.length; i++) {
-      if (result[i].status !== "correct") {
-        return false;
-      }
-    }
-    return true;
+    setGameStatus("running");
   };
 
   return (
     <>
-      <DisplayGuess guesses={guesses} />
-      {userWon ? (
+      <GuessResults guesses={guesses} answer={answer} />
+      <GuessInput gameStatus={gameStatus} handleAddGuess={handleAddGuess} />
+      <VirtualKeyboard guesses={guesses} answer={answer} />
+      {gameStatus === "won" ? (
         <Banner
           status="happy"
           numOfGuesses={guesses.length}
           handleReset={handleReset}
         />
-      ) : guesses.length === 6 && !userWon ? (
+      ) : gameStatus === "lost" ? (
         <Banner status="sad" answer={answer} handleReset={handleReset} />
-      ) : (
-        <>
-          <GuessInput handleAddGuess={handleAddGuess} />
-          <VirtualKeyboard guesses={guesses} />
-        </>
-      )}
+      ) : null}
     </>
   );
 }

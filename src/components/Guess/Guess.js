@@ -1,22 +1,25 @@
 import React from "react";
 
-export const Guess = ({ guess }) => {
-  const defaultGuess = [
-    { letter: "", status: "" },
-    { letter: "", status: "" },
-    { letter: "", status: "" },
-    { letter: "", status: "" },
-    { letter: "", status: "" },
-  ];
+import { range } from "../../utils";
+import { checkGuess } from "../../game-helpers";
 
-  const guessToDisplay = guess.length ? guess : defaultGuess;
+function Cell({ letter, status }) {
+  const className = status ? `cell ${status}` : "cell";
+
+  return <span className={className}>{letter}</span>;
+}
+
+export const Guess = ({ value, answer }) => {
+  const result = checkGuess(value, answer);
 
   return (
     <p className="guess">
-      {guessToDisplay.map(({ letter, status }, index) => (
-        <span key={index} className={`cell ${status}`}>
-          {letter}
-        </span>
+      {range(5).map((num) => (
+        <Cell
+          key={num}
+          letter={result ? result[num].letter : undefined}
+          status={result ? result[num].status : undefined}
+        />
       ))}
     </p>
   );

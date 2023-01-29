@@ -10,7 +10,10 @@ export const Banner = ({ status, numOfGuesses, answer, handleReset }) => {
   const WinningBannerContent = () => (
     <p>
       <strong>Congratulations!</strong> Got it in{" "}
-      <strong>{numOfGuesses} guesses</strong>.
+      <strong>
+        {numOfGuesses === 1 ? "1 guess" : `${numOfGuesses} guesses`}
+      </strong>
+      .
       <ResetButton />
     </p>
   );

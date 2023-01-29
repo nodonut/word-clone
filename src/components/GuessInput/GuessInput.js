@@ -1,6 +1,6 @@
 import React from "react";
 
-export const GuessInput = ({ handleAddGuess }) => {
+export const GuessInput = ({ handleAddGuess, gameStatus }) => {
   const [guess, setGuess] = React.useState("");
 
   const handleSubmit = (event) => {
@@ -14,6 +14,8 @@ export const GuessInput = ({ handleAddGuess }) => {
     <form onSubmit={handleSubmit}>
       <label htmlFor="guess">Enter guess: </label>
       <input
+        required
+        disabled={gameStatus !== "running"}
         type="text"
         value={guess.toUpperCase()}
         minLength={5}

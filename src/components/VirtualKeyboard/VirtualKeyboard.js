@@ -1,14 +1,15 @@
 import React from "react";
 
-export const VirtualKeyboard = ({ guesses }) => {
-  const [word, setWord] = React.useState("");
+import { checkGuess } from "../../game-helpers";
+
+export const VirtualKeyboard = ({ guesses, answer }) => {
   const rows = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
     ["Z", "X", "C", "V", "B", "N", "M"],
   ];
 
-  const flatGuesses = guesses.flat();
+  const validatedGuesses = guesses.map((guess) => checkGuess(guess, answer));
 
   return (
     <form
@@ -19,19 +20,12 @@ export const VirtualKeyboard = ({ guesses }) => {
       {rows.map((row, index) => (
         <div key={index} className="keyboard">
           {row.map((letter) => {
-            const status = flatGuesses.find(
-              (guess) => guess.letter === letter
-            )?.status;
+            const status = validatedGuesses
+              .flat()
+              .find((guess) => guess.letter === letter)?.status;
 
             return (
-              <button
-                key={letter}
-                className={`key cell ${status}`}
-                onClick={() => {
-                  setWord(word + letter);
-                }}
-                type="submit"
-              >
+              <button key={letter} className={`key cell ${status}`}>
                 {letter}
               </button>
             );
