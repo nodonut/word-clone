@@ -23,16 +23,6 @@ function Game() {
     setGuesses(nextGuesses);
   };
 
-  const handleAddWord = (word) => {
-    const nextGuesses = [...guesses.slice(guesses.length + 1, -1)];
-    const result = checkGuess(word, answer);
-    if (checkIfWon(result)) {
-      setUserWon(true);
-    }
-    nextGuesses.push(result);
-    setGuesses(nextGuesses);
-  };
-
   const handleReset = () => {
     const nextAnswer = sample(WORDS);
     setAnswer(nextAnswer);
@@ -63,11 +53,7 @@ function Game() {
       ) : (
         <>
           <GuessInput handleAddGuess={handleAddGuess} />
-          <VirtualKeyboard
-            guesses={guesses}
-            handleAddWord={handleAddWord}
-            setGuesses={setGuesses}
-          />
+          <VirtualKeyboard guesses={guesses} />
         </>
       )}
     </>

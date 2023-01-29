@@ -1,6 +1,6 @@
 import React from "react";
 
-export const VirtualKeyboard = ({ handleAddWord, guesses, setGuesses }) => {
+export const VirtualKeyboard = ({ guesses }) => {
   const [word, setWord] = React.useState("");
   const rows = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -9,44 +9,11 @@ export const VirtualKeyboard = ({ handleAddWord, guesses, setGuesses }) => {
   ];
 
   const flatGuesses = guesses.flat();
-  const convertWord = (word) => {
-    const result = [];
-    for (let i = 0; i < word.length; i++) {
-      result.push({
-        letter: word[i],
-        status: "",
-      });
-    }
-    return result;
-  };
-
-  const handleSubmit = () => {
-    if (word.length < 5) {
-      if (guesses.length === 0) {
-        setGuesses([convertWord(word)]);
-        return;
-      }
-
-      const nextGuesses = guesses.map((guess) => {
-        if (guess.length < 5) {
-          return convertWord(word);
-        }
-                
-        return guess;
-      });
-
-      setGuesses(nextGuesses);
-    } else {
-      handleAddWord(word);
-      setWord("");
-    }
-  };
 
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        handleSubmit();
       }}
     >
       {rows.map((row, index) => (
