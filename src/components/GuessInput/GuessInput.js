@@ -6,6 +6,11 @@ export const GuessInput = ({ handleAddGuess, gameStatus }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    if (guess.length !== 5) {
+      window.alert("Please enter exactly 5 characters. 💖");
+      return;
+    }
+
     handleAddGuess(guess);
     setGuess("");
   };
